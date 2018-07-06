@@ -1,20 +1,26 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
 
 namespace UgandaTelecom.Kyc.Core.Data
 {
-    public class SqlDatabaseServer : DatabaseServer, ISqlDatabaseServer
+    public class SqlDatabaseServer : ISqlDatabaseServer
     {
-        public SqlDatabaseServer(IOptions<ConnectionStringsAppSettings> connectionStringAppSettings) : base(connectionStringAppSettings)
+        private SqlConnection _connection;
+
+        public SqlDatabaseServer(IOptions<ConnectionStringsAppSettings> connectionStringAppSettings)
         {
+            CreateConnection(connectionStringAppSettings);
         }
 
-        public override void CreateConnection(IOptions<ConnectionStringsAppSettings> connectionStringAppSettings)
+        public DbConnection Connection => _connection;
+
+        public void CreateConnection(IOptions<ConnectionStringsAppSettings> connectionStringAppSettings)
         {
-            Connection = new SqlConnection(connectionStringAppSettings.Value.DefaultConnection);
+            _connection = new SqlConnection(connectionStringAppSettings.Value.DefaultConnection);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace UgandaTelecom.Kyc.Core.Models
         public string Surname { get; set; }
         public string GivenName { get; set; }
         public string Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public string IdentificationNumber { get; set; }
         public string Msisdn { get; set; }
         public string IdentificationType { get; set; }
@@ -28,6 +28,6 @@ namespace UgandaTelecom.Kyc.Core.Models
         public string NiraValidation { get; set; }
         public string OtherNames { get; set; }
         public string IdCardNumber { get; set; }
-        public DateTime VisaExpiry { get; set; }
+        public DateTime? VisaExpiry { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace UgandaTelecom.Kyc.Core.Data
 {
     public interface IDatabaseServer
     {
-        DbConnection Connection { get; set; }
+        DbConnection Connection { get; }
         void CreateConnection(IOptions<ConnectionStringsAppSettings> connectionStringAppSettings);
     }
 }
