@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using UgandaTelecom.Kyc.Core.Data;
 
 namespace UgandaTelecom.Kyc.Api
 {
@@ -23,6 +24,9 @@ namespace UgandaTelecom.Kyc.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Getting the application settings
+            services.Configure<ConnectionStringsAppSettings>(Configuration.GetSection("ConnectionStrings"));
+
             services.AddMvc();
         }
 
