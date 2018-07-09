@@ -66,27 +66,27 @@ namespace UgandaTelecom.Kyc.Core.Services
                         command.CommandType = CommandType.Text;
                         command.CommandText = registrationInsetQuery;
 
-                        command.Parameters.AddWithValue("@Surname", subscriber.Surname);
-                        command.Parameters.AddWithValue("@GivenName", subscriber.GivenName);
+                        command.Parameters.AddWithValue("@Surname", subscriber.Surname.ToUpper());
+                        command.Parameters.AddWithValue("@GivenName", subscriber.GivenName.ToUpper());
                         if (subscriber.Gender == null)
                             command.Parameters.AddWithValue("@Gender", DBNull.Value);
                         else
-                            command.Parameters.AddWithValue("@Gender", subscriber.Gender);
+                            command.Parameters.AddWithValue("@Gender", subscriber.Gender.ToUpper());
                         if (subscriber.DateOfBirth == null)
                             command.Parameters.AddWithValue("@DateOfBirth", DBNull.Value);
                         else
                             command.Parameters.AddWithValue("@DateOfBirth", subscriber.DateOfBirth);
-                        command.Parameters.AddWithValue("@IdentificationNumber", subscriber.IdentificationNumber);
+                        command.Parameters.AddWithValue("@IdentificationNumber", subscriber.IdentificationNumber.ToUpper());
                         command.Parameters.AddWithValue("@Msisdn", subscriber.Msisdn);
-                        command.Parameters.AddWithValue("@IdentificationType", subscriber.IdentificationType);
+                        command.Parameters.AddWithValue("@IdentificationType", subscriber.IdentificationType.ToUpper());
                         if (subscriber.Village == null)
                             command.Parameters.AddWithValue("@Village", DBNull.Value);
                         else
-                            command.Parameters.AddWithValue("@Village", subscriber.Village);
+                            command.Parameters.AddWithValue("@Village", subscriber.Village.ToUpper());
                         if (subscriber.District == null)
                             command.Parameters.AddWithValue("@District", DBNull.Value);
                         else
-                            command.Parameters.AddWithValue("@District", subscriber.District);
+                            command.Parameters.AddWithValue("@District", subscriber.District.ToUpper());
                         if (subscriber.FaceImg == null)
                             command.Parameters.AddWithValue("@FaceImg", DBNull.Value);
                         else
@@ -105,9 +105,9 @@ namespace UgandaTelecom.Kyc.Core.Services
                             command.Parameters.AddWithValue("@AgentMsisdn", subscriber.AgentMsisdn);
                         command.Parameters.AddWithValue("@RegistrationDate", subscriber.RegistrationDate);
                         command.Parameters.AddWithValue("@RegistrationTime", subscriber.RegistrationTime);
-                        command.Parameters.AddWithValue("@Mode", subscriber.Mode);
+                        command.Parameters.AddWithValue("@Mode", subscriber.Mode.ToUpper());
                         command.Parameters.AddWithValue("@Verified", subscriber.Verified); ;
-                        command.Parameters.AddWithValue("@VerificationRequest", subscriber.VerificationRequest);
+                        command.Parameters.AddWithValue("@VerificationRequest", subscriber.VerificationRequest.ToUpper());
                         if (subscriber.NiraValidation == null)
                             command.Parameters.AddWithValue("@NiraValidation", DBNull.Value);
                         else
@@ -115,11 +115,11 @@ namespace UgandaTelecom.Kyc.Core.Services
                         if (subscriber.OtherNames == null)
                             command.Parameters.AddWithValue("@OtherNames", DBNull.Value);
                         else
-                            command.Parameters.AddWithValue("@OtherNames", subscriber.OtherNames);
+                            command.Parameters.AddWithValue("@OtherNames", subscriber.OtherNames.ToUpper());
                         if (subscriber.IdCardNumber == null)
-                            command.Parameters.AddWithValue("@IdCarNumber", DBNull.Value);
+                            command.Parameters.AddWithValue("@IdCardNumber", DBNull.Value);
                         else
-                            command.Parameters.AddWithValue("@IdCardNumber", subscriber.IdCardNumber);
+                            command.Parameters.AddWithValue("@IdCardNumber", subscriber.IdCardNumber.ToUpper());
                         if (subscriber.VisaExpiry == null)
                             command.Parameters.AddWithValue("@VisaExpiry", DBNull.Value);
                         else

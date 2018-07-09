@@ -18,7 +18,7 @@ namespace UgandaTelecom.Kyc.Core.Data
 
         public DbConnection Connection => _connection;
 
-        public void CreateConnection(IOptions<ConnectionStringsAppSettings> connectionStringAppSettings)
+        public virtual void CreateConnection(IOptions<ConnectionStringsAppSettings> connectionStringAppSettings)
         {
             _connection = new SqlConnection(connectionStringAppSettings.Value.DefaultConnection);
         }

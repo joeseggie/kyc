@@ -6,6 +6,6 @@ namespace UgandaTelecom.Kyc.Core.Data
 {
     public class ConnectionStringsAppSettings
     {
-        public string DefaultConnection { get; set; }
+        public virtual string DefaultConnection { get; set; }
     }
 }
