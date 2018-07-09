@@ -151,9 +151,59 @@ namespace UgandaTelecom.Kyc.Core.Services
         /// </summary>
         /// <param name="subscriber">Subscriber details update.</param>
         /// <returns>Operation result indicating if it was a success or not.</returns>
-        public Task<OperationResult> UpdateAsync(Subscriber subscriber)
+        public async Task<OperationResult> UpdateAsync(Subscriber subscriber)
         {
-            throw new NotImplementedException();
+            using (var db = (SqlConnection)_sqlDatabaseServer.Connection)
+            {
+                await db.OpenAsync();
+                var updateQuery = $"Update SimAppMain SET Gender = @Gender, Village = @Village, District = @District, FaceImg = @FaceImg, IdFrontimg = @IdFrontimg, IdBackimg = @IdBackimg, NiraValidation = @NiraValidation, VisaExpiry = @VisaExpiry WHERE Msisdn = @Msisdn";
+
+                using (var transaction = db.BeginTransaction())
+                {
+                    try
+                    {
+                        var command = db.CreateCommand();
+                        command.Transaction = transaction;
+                        command.CommandText = updateQuery;
+                        command.CommandType = CommandType.Text;
+
+                        command.Parameters.Add(SetCommandParameter("@Gender", subscriber.Gender.ToUpper()));
+                        command.Parameters.Add(SetCommandParameter("@Village", subscriber.Village.ToUpper()));
+                        command.Parameters.Add(SetCommandParameter("@District", subscriber.District.ToUpper()));
+                        command.Parameters.Add(SetCommandParameter("@FaceImg", subscriber.FaceImg));
+                        command.Parameters.Add(SetCommandParameter("@IdFrontimg", subscriber.IdFrontimg));
+                        command.Parameters.Add(SetCommandParameter("@IdBackimg", subscriber.IdBackimg));
+                        command.Parameters.Add(SetCommandParameter("@NiraValidation", subscriber.NiraValidation));
+                        command.Parameters.Add(SetCommandParameter("@VisaExpiry", subscriber.VisaExpiry));
+                        command.Parameters.Add(SetCommandParameter("@Msisdn", subscriber.Msisdn));
+
+                        await command.ExecuteNonQueryAsync();
+
+                        transaction.Commit();
+
+                        return new OperationResult { Success = true, Message = subscriber.Msisdn };
+                    }
+                    catch (SqlException) { transaction.Rollback(); throw; }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Setup the parameters for a command.
+        /// </summary>
+        /// <param name="parameterName">Name of parameter</param>
+        /// <param name="value">Parameter value.</param>
+        /// <returns>SqlParameter</returns>
+        public SqlParameter SetCommandParameter(string parameterName, object value)
+        {
+            SqlParameter returnParameter;
+
+            if (value == null)
+                returnParameter = new SqlParameter(parameterName, DBNull.Value);
+            else
+                returnParameter = new SqlParameter(parameterName, value);
+
+            return returnParameter;
         }
     }
 }
