@@ -159,7 +159,7 @@ namespace UgandaTelecom.Kyc.Core.Services
             using (var db = (SqlConnection)_sqlDatabaseServer.Connection)
             {
                 await db.OpenAsync();
-                var updateQuery = $"Update SimAppMain SET Gender = @Gender, Village = @Village, District = @District, FaceImg = @FaceImg, IdFrontimg = @IdFrontimg, IdBackimg = @IdBackimg, NiraValidation = @NiraValidation, VisaExpiry = @VisaExpiry WHERE Msisdn = @Msisdn";
+                var updateQuery = $"Update SimAppMain SET Gender = @Gender, Village = @Village, District = @District, FaceImg = @FaceImg, IdFrontimg = @IdFrontimg, IdBackimg = @IdBackimg, NiraValidation = @NiraValidation, VisaExpiry = @VisaExpiry, IdCardNumber = @IdCardNumber WHERE Msisdn = @Msisdn";
 
                 using (var transaction = db.BeginTransaction())
                 {
@@ -179,6 +179,7 @@ namespace UgandaTelecom.Kyc.Core.Services
                         command.Parameters.Add(SetCommandParameter("@NiraValidation", subscriber.NiraValidation));
                         command.Parameters.Add(SetCommandParameter("@VisaExpiry", subscriber.VisaExpiry));
                         command.Parameters.Add(SetCommandParameter("@Msisdn", subscriber.Msisdn));
+                        command.Parameters.Add(SetCommandParameter("@IdCardNumber", subscriber.IdCardNumber));
 
                         await command.ExecuteNonQueryAsync();
 
