@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UgandaTelecom.Kyc.Core.Data;
+using UgandaTelecom.Kyc.Core.Services;
 
 namespace UgandaTelecom.Kyc.Api
 {
@@ -26,6 +27,9 @@ namespace UgandaTelecom.Kyc.Api
         {
             // Getting the application settings
             services.Configure<ConnectionStringsAppSettings>(Configuration.GetSection("ConnectionStrings"));
+
+            services.AddTransient<ISqlDatabaseServer, SqlDatabaseServer>();
+            services.AddTransient<ISubscriberService, SubscriberService>();
 
             services.AddMvc();
         }
