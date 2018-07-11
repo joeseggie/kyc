@@ -131,7 +131,10 @@ namespace UgandaTelecom.Kyc.Core.Services
 
                         return new OperationResult { Success = true, Message = subscriber.Msisdn };
                     }
-                    catch (SqlException) { transaction.Rollback(); throw; } 
+                    catch (SqlException error) when ( error.Number == 2627 ) { transaction.Rollback(); return new OperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException error) when (error.Number == 2601) { transaction.Rollback(); return new OperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException error) when (error.Number == 547) { transaction.Rollback(); return new OperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException) { transaction.Rollback(); throw; }
                 }
             }
         }

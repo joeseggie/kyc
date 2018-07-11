@@ -10,11 +10,11 @@ using UgandaTelecom.Kyc.Core.Models;
 using UgandaTelecom.Kyc.Core.Services;
 using Xunit;
 
-namespace UgandaTelecom.Kyc.UnitTests
+namespace UgandaTelecom.Kyc.IntegrationTests
 {
     public class SubscriberServiceRegisterAsyncShould
     {
-        [Fact, Trait("Service", "Subscriber")]
+        [Fact, Trait("Service", "Subscriber"), Trait("Feature", "Subscriber registration")]
         public async Task ReturnOperationResult()
         {
             // Given
