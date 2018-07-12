@@ -5,16 +5,18 @@ using System;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using UgandaTelecom.Kyc.Core.Common;
+using UgandaTelecom.Kyc.Core.Common.OperationResults;
 using UgandaTelecom.Kyc.Core.Data;
 using UgandaTelecom.Kyc.Core.Models;
 using UgandaTelecom.Kyc.Core.Services;
+using UgandaTelecom.Kyc.Core.Services.Subscribers;
 using Xunit;
 
 namespace UgandaTelecom.Kyc.IntegrationTests
 {
     public class SubscriberServiceRegisterAsyncShould
     {
-        [Fact, Trait("Service", "Subscriber"), Trait("Feature", "Subscriber registration")]
+        [Fact, Trait("Service", "Subscriber"), Trait("Feature", "SubscriberRegistration")]
         public async Task ReturnOperationResult()
         {
             // Given
@@ -43,7 +45,7 @@ namespace UgandaTelecom.Kyc.IntegrationTests
             var result = await testService.RegisterAsync(testSubscriber);
 
             // Then
-            result.ShouldBeOfType<OperationResult>();
+            result.ShouldBeOfType<TaskOperationResult>();
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
-using UgandaTelecom.Kyc.Core.Common;
+using UgandaTelecom.Kyc.Core.Common.OperationResults;
 using UgandaTelecom.Kyc.Core.Data;
 using UgandaTelecom.Kyc.Core.Models;
 
-namespace UgandaTelecom.Kyc.Core.Services
+namespace UgandaTelecom.Kyc.Core.Services.Subscribers
 {
     /// <summary>
     /// Subscriber handling service.
@@ -27,7 +27,7 @@ namespace UgandaTelecom.Kyc.Core.Services
         /// </summary>
         /// <param name="msisdn">Subscriber MSISDN</param>
         /// <returns>Result from operation indicating whether it was a success.</returns>
-        public Task<OperationResult> ArchiveAsync(string msisdn)
+        public Task<TaskOperationResult> ArchiveAsync(string msisdn)
         {
             throw new NotImplementedException();
         }
@@ -47,7 +47,7 @@ namespace UgandaTelecom.Kyc.Core.Services
         /// </summary>
         /// <param name="subscriber">Subscriber to be registered.</param>
         /// <returns>Operation result indicating if it was a success.</returns>
-        public async Task<OperationResult> RegisterAsync(Subscriber subscriber)
+        public async Task<TaskOperationResult> RegisterAsync(Subscriber subscriber)
         {
             using (SqlConnection db = (SqlConnection)_sqlDatabaseServer.Connection)
             {
@@ -129,11 +129,11 @@ namespace UgandaTelecom.Kyc.Core.Services
 
                         transaction.Commit();
 
-                        return new OperationResult { Success = true, Message = subscriber.Msisdn };
+                        return new TaskOperationResult { Success = true, Message = subscriber.Msisdn };
                     }
-                    catch (SqlException error) when ( error.Number == 2627 ) { transaction.Rollback(); return new OperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
-                    catch (SqlException error) when (error.Number == 2601) { transaction.Rollback(); return new OperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
-                    catch (SqlException error) when (error.Number == 547) { transaction.Rollback(); return new OperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException error) when ( error.Number == 2627 ) { transaction.Rollback(); return new TaskOperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException error) when (error.Number == 2601) { transaction.Rollback(); return new TaskOperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException error) when (error.Number == 547) { transaction.Rollback(); return new TaskOperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
                     catch (SqlException) { transaction.Rollback(); throw; }
                 }
             }
@@ -154,7 +154,7 @@ namespace UgandaTelecom.Kyc.Core.Services
         /// </summary>
         /// <param name="subscriber">Subscriber details update.</param>
         /// <returns>Operation result indicating if it was a success or not.</returns>
-        public async Task<OperationResult> UpdateAsync(Subscriber subscriber)
+        public async Task<TaskOperationResult> UpdateAsync(Subscriber subscriber)
         {
             using (var db = (SqlConnection)_sqlDatabaseServer.Connection)
             {
@@ -185,7 +185,7 @@ namespace UgandaTelecom.Kyc.Core.Services
 
                         transaction.Commit();
 
-                        return new OperationResult { Success = true, Message = subscriber.Msisdn };
+                        return new TaskOperationResult { Success = true, Message = subscriber.Msisdn };
                     }
                     catch (SqlException) { transaction.Rollback(); throw; }
                 }

@@ -5,15 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using UgandaTelecom.Kyc.Api.Controllers;
 using UgandaTelecom.Kyc.Core.Common;
+using UgandaTelecom.Kyc.Core.Common.OperationResults;
 using UgandaTelecom.Kyc.Core.Models;
 using UgandaTelecom.Kyc.Core.Services;
+using UgandaTelecom.Kyc.Core.Services.Subscribers;
 using Xunit;
 
 namespace UgandaTelecom.Kyc.UnitTests
 {
     public class SubscribersControllerPostShould
     {
-        [Fact, Trait("Feature", "Subscriber registration"), Trait("Controller", "SubscribersController")]
+        [Fact, Trait("Feature", "SubscriberRegistration"), Trait("Controller", "SubscribersController")]
         public async Task CallSubscriberServiceRegisterAsync()
         {
             // Given
@@ -35,7 +37,7 @@ namespace UgandaTelecom.Kyc.UnitTests
                 Verified = true,
                 Village = "Kisowera"
             };
-            mock.Setup(m => m.RegisterAsync(testSubscriber)).Returns(Task.FromResult(new OperationResult { Success = true, Message = "711187734" }));
+            mock.Setup(m => m.RegisterAsync(testSubscriber)).Returns(Task.FromResult(new TaskOperationResult { Success = true, Message = "711187734" }));
 
             // When
             await testController.Post(testSubscriber);

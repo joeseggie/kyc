@@ -4,16 +4,18 @@ using Shouldly;
 using System;
 using System.Threading.Tasks;
 using UgandaTelecom.Kyc.Core.Common;
+using UgandaTelecom.Kyc.Core.Common.OperationResults;
 using UgandaTelecom.Kyc.Core.Data;
 using UgandaTelecom.Kyc.Core.Models;
 using UgandaTelecom.Kyc.Core.Services;
+using UgandaTelecom.Kyc.Core.Services.Subscribers;
 using Xunit;
 
 namespace UgandaTelecom.Kyc.IntegrationTests
 {
     public class SubscriberServiceUpdateAsyncShould
     {
-        [Fact, Trait("Service", "Subscriber"), Trait("Feature", "Subscriber update")]
+        [Fact, Trait("Service", "Subscriber"), Trait("Feature", "SubscriberUpdate")]
         public async Task ReturnOperationResult()
         {
             // Given
@@ -37,7 +39,7 @@ namespace UgandaTelecom.Kyc.IntegrationTests
             var result = await testService.UpdateAsync(testSubscriber);
 
             // Then
-            result.ShouldBeOfType<OperationResult>();
+            result.ShouldBeOfType<TaskOperationResult>();
         }
     }
 }

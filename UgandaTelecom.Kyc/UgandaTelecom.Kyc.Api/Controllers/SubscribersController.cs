@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UgandaTelecom.Kyc.Core.Models;
 using UgandaTelecom.Kyc.Core.Services;
+using UgandaTelecom.Kyc.Core.Services.Subscribers;
 
 namespace UgandaTelecom.Kyc.Api.Controllers
 {
