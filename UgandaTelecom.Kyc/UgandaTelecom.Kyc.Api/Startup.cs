@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UgandaTelecom.Kyc.Core.Data;
 using UgandaTelecom.Kyc.Core.Services;
+using UgandaTelecom.Kyc.Core.Services.Msente;
+using UgandaTelecom.Kyc.Core.Services.Subscribers;
 
 namespace UgandaTelecom.Kyc.Api
 {
@@ -27,9 +29,11 @@ namespace UgandaTelecom.Kyc.Api
         {
             // Getting the application settings
             services.Configure<ConnectionStringsAppSettings>(Configuration.GetSection("ConnectionStrings"));
+            services.Configure<MsenteAppSettings>(Configuration.GetSection("Msente"));
 
             services.AddTransient<ISqlDatabaseServer, SqlDatabaseServer>();
             services.AddTransient<ISubscriberService, SubscriberService>();
+            services.AddTransient<IMsenteService, MsenteService>();
 
             services.AddMvc();
         }
