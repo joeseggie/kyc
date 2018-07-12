@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UgandaTelecom.Kyc.Core.Common.OperationResults;
 using UgandaTelecom.Kyc.Core.Data;
@@ -208,6 +209,16 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
                 returnParameter = new SqlParameter(parameterName, value);
 
             return returnParameter;
+        }
+
+        /// <summary>
+        /// Checks if MSISDN is a valid UTL number
+        /// </summary>
+        /// <param name="msisdn">MSISDN to validate.</param>
+        /// <returns>True if MSISDN is a valid UTL number</returns>
+        public async Task<bool> ValidateMsidnAsync(string msisdn)
+        {
+            return await Task.FromResult(Regex.IsMatch(msisdn, "^(71|4[0-9])[0-9]{7}$"));
         }
     }
 }
