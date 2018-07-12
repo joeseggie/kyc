@@ -32,7 +32,7 @@ namespace UgandaTelecom.Kyc.UnitTests
                 IdBackimg = "sampleidbackimage",
                 VisaExpiry = DateTime.Now
             };
-            mock.Setup(m => m.UpdateAsync(subscriber)).Returns(Task.FromResult(new TaskOperationResult { Success = true, Message = "711187734" }));
+            mock.Setup(m => m.UpdateAsync(subscriber)).Returns(Task.FromResult(new TaskOperationResult { Success = true, TaskResult = "711187734" }));
 
             // When
             await testController.Put(subscriber);

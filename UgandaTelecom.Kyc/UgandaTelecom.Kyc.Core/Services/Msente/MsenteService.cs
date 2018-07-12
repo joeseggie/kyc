@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,11 +32,23 @@ namespace UgandaTelecom.Kyc.Core.Services.Msente
             {
                 var body = JsonConvert.SerializeObject(msenteCredential);
                 var result = await _urlHandlerService.ProcessPOSTRequestAsync(_msenteAppSettings.Value.CredentialsApi.Url, body);
-                return new TaskOperationResult { Success = true, Message = result };
+                var jsonTokenResponse = JObject.Parse(result);
+                var referenceId = (string)jsonTokenResponse["Referenceid"];
+                var responseResultToken = (object)jsonTokenResponse["ResponseResult"];
+
+                if (responseResultToken.ToString() == "INVALID CREDENTIALS")
+                {
+                    return new TaskOperationResult { Success = false, TaskResult = "AUTHENTICATION_FAILURE" };
+                }
+                else
+                {
+                    var validToken = JsonConvert.DeserializeObject<ValidMsenteTokenResult>(responseResultToken.ToString());
+                    return new TaskOperationResult { Success = true, TaskResult = validToken.token };
+                }
             }
             catch (ApplicationException error)
             {
-                return new TaskOperationResult { Success = false, Message = error.Message };
+                return new TaskOperationResult { Success = false, TaskResult = error.Message };
             }
         }
     }

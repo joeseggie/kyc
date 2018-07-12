@@ -34,6 +34,7 @@ namespace UgandaTelecom.Kyc.Api
             services.AddTransient<ISqlDatabaseServer, SqlDatabaseServer>();
             services.AddTransient<ISubscriberService, SubscriberService>();
             services.AddTransient<IMsenteService, MsenteService>();
+            services.AddTransient<IUrlHandlerService, UrlHandlerService>();
 
             services.AddMvc();
         }

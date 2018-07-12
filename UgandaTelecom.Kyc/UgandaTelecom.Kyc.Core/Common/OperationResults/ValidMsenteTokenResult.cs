@@ -4,9 +4,8 @@ using System.Text;
 
 namespace UgandaTelecom.Kyc.Core.Common.OperationResults
 {
-    public class TaskOperationResult
+    public class ValidMsenteTokenResult
     {
-        public bool Success { get; set; }
-        public string TaskResult { get; set; }
+        public virtual string token { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace UgandaTelecom.Kyc.Core.Services.Msente
 {
     public class MsenteCredential
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
     }
 }

@@ -129,11 +129,11 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
 
                         transaction.Commit();
 
-                        return new TaskOperationResult { Success = true, Message = subscriber.Msisdn };
+                        return new TaskOperationResult { Success = true, TaskResult = subscriber.Msisdn };
                     }
-                    catch (SqlException error) when ( error.Number == 2627 ) { transaction.Rollback(); return new TaskOperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
-                    catch (SqlException error) when (error.Number == 2601) { transaction.Rollback(); return new TaskOperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
-                    catch (SqlException error) when (error.Number == 547) { transaction.Rollback(); return new TaskOperationResult { Success = false, Message = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException error) when ( error.Number == 2627 ) { transaction.Rollback(); return new TaskOperationResult { Success = false, TaskResult = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException error) when (error.Number == 2601) { transaction.Rollback(); return new TaskOperationResult { Success = false, TaskResult = "Can not insert duplicate record. Subscriber is already registered" }; }
+                    catch (SqlException error) when (error.Number == 547) { transaction.Rollback(); return new TaskOperationResult { Success = false, TaskResult = "Can not insert duplicate record. Subscriber is already registered" }; }
                     catch (SqlException) { transaction.Rollback(); throw; }
                 }
             }
@@ -185,7 +185,7 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
 
                         transaction.Commit();
 
-                        return new TaskOperationResult { Success = true, Message = subscriber.Msisdn };
+                        return new TaskOperationResult { Success = true, TaskResult = subscriber.Msisdn };
                     }
                     catch (SqlException) { transaction.Rollback(); throw; }
                 }

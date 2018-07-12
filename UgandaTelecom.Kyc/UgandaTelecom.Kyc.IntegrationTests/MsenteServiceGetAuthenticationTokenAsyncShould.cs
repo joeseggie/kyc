@@ -28,8 +28,8 @@ namespace UgandaTelecom.Kyc.IntegrationTests
             });
             var credentials = new MsenteCredential
             {
-                Username = "reg_kyc321",
-                Password = "9c7l8t"
+                username = "reg_kyc321",
+                password = "9c7l8t"
             };
             var body = JsonConvert.SerializeObject(credentials);
             var mockUrlHandlerService = new Mock<IUrlHandlerService>();
