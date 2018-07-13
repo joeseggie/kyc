@@ -279,5 +279,19 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
         {
             return await Task.FromResult(new TaskOperationResult { Success = Regex.IsMatch(msisdn, "^(71|4[0-9])[0-9]{7}$"), TaskResult = msisdn });
         }
+
+        /// <summary>
+        /// Checks if msisdn is registered.
+        /// </summary>
+        /// <param name="msisdn">Msisdn to check</param>
+        /// <returns>True if MSISDN is registered.</returns>
+        public async Task<TaskOperationResult> IsRegisteredAsync(string msisdn)
+        {
+            if ((await GetAsync(msisdn)) == null)
+                return new TaskOperationResult { Success = false, TaskResult = msisdn };
+            else
+                return
+                    new TaskOperationResult { Success = true, TaskResult = msisdn };
+        }
     }
 }
