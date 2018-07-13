@@ -110,8 +110,9 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
         {
             using (SqlConnection db = (SqlConnection)_sqlDatabaseServer.Connection)
             {
-                subscriber.RegistrationDate = DateTime.Now;
-                subscriber.RegistrationTime = new TimeSpan(subscriber.RegistrationDate.Hour, subscriber.RegistrationDate.Minute, subscriber.RegistrationDate.Second);
+                var registrationDateTime = DateTime.Now;
+                subscriber.RegistrationDate = registrationDateTime;
+                subscriber.RegistrationTime = new TimeSpan(registrationDateTime.Hour, registrationDateTime.Minute, registrationDateTime.Second);
                 await db.OpenAsync();
 
                 var registrationInsetQuery = $@"INSERT INTO SimAppMain (Surname, GivenName, Gender, DateOfBirth, IdentificationNumber, Msisdn, IdentificationType, Village, District, FaceImg, IdFrontimg, IdBackimg, AgentMsisdn, RegistrationDate, RegistrationTime, Mode, Verified, VerificationRequest, NiraValidation, OtherNames, IdCardNumber, VisaExpiry) VALUES (@Surname, @GivenName, @Gender, @DateOfBirth, @IdentificationNumber, @Msisdn, @IdentificationType, @Village, @District, @FaceImg, @IdFrontimg, @IdBackimg, @AgentMsisdn, @RegistrationDate, @RegistrationTime, @Mode, @Verified, @VerificationRequest, @NiraValidation, @OtherNames, @IdCardNumber, @VisaExpiry);";
