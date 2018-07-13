@@ -6,7 +6,7 @@ namespace UgandaTelecom.Kyc.Core.Models
 {
     public class Subscriber
     {
-        public Guid SubscriberId { get; set; }
+        public Guid? SubscriberId { get; set; }
         public string Surname { get; set; }
         public string GivenName { get; set; }
         public string Gender { get; set; }
@@ -20,8 +20,8 @@ namespace UgandaTelecom.Kyc.Core.Models
         public string IdFrontimg { get; set; }
         public string IdBackimg { get; set; }
         public string AgentMsisdn { get; set; }
-        public DateTime RegistrationDate { get; set; }
-        public TimeSpan RegistrationTime { get; set; }
+        public DateTime? RegistrationDate { get; set; }
+        public TimeSpan? RegistrationTime { get; set; }
         public string Mode { get; set; }
         public bool Verified { get; set; }
         public string VerificationRequest { get; set; }
