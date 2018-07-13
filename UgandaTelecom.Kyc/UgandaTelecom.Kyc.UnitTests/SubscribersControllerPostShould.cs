@@ -40,7 +40,7 @@ namespace UgandaTelecom.Kyc.UnitTests
             mock.Setup(m => m.RegisterAsync(testSubscriber)).Returns(Task.FromResult(new TaskOperationResult { Success = true, TaskResult = "711187734" }));
 
             // When
-            await testController.Post(testSubscriber);
+            await testController.Register(testSubscriber);
 
             // Then
             mock.Verify(m => m.RegisterAsync(testSubscriber), Times.AtMostOnce());

@@ -22,16 +22,23 @@ namespace UgandaTelecom.Kyc.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Post([FromBody]Subscriber subscriber)
+        public async Task<IActionResult> Register([FromBody]Subscriber subscriber)
         {
             var operationResult = await _subscriberService.RegisterAsync(subscriber);
             return Ok(operationResult);
         }
 
         [HttpPut("update")]
-        public async Task<IActionResult> Put([FromBody]Subscriber subscriber)
+        public async Task<IActionResult> Update([FromBody]Subscriber subscriber)
         {
             var operationResult = await _subscriberService.UpdateAsync(subscriber);
+            return Ok(operationResult);
+        }
+
+        [HttpGet("validatemsisdn/{msisdn}")]
+        public async Task<IActionResult> ValidateMsisdn([FromRoute]string msisdn)
+        {
+            var operationResult = await _subscriberService.ValidateMsidnAsync(msisdn);
             return Ok(operationResult);
         }
     }
