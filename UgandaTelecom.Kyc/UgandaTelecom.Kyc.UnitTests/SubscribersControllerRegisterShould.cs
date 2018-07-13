@@ -13,7 +13,7 @@ using Xunit;
 
 namespace UgandaTelecom.Kyc.UnitTests
 {
-    public class SubscribersControllerPostShould
+    public class SubscribersControllerRegisterShould
     {
         [Fact, Trait("Feature", "SubscriberRegistration"), Trait("Controller", "SubscribersController")]
         public async Task CallSubscriberServiceRegisterAsync()
