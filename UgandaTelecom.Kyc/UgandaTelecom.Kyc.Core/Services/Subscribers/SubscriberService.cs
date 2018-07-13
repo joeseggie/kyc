@@ -216,9 +216,9 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
         /// </summary>
         /// <param name="msisdn">MSISDN to validate.</param>
         /// <returns>True if MSISDN is a valid UTL number</returns>
-        public async Task<bool> ValidateMsidnAsync(string msisdn)
+        public async Task<TaskOperationResult> ValidateMsidnAsync(string msisdn)
         {
-            return await Task.FromResult(Regex.IsMatch(msisdn, "^(71|4[0-9])[0-9]{7}$"));
+            return await Task.FromResult(new TaskOperationResult { Success = Regex.IsMatch(msisdn, "^(71|4[0-9])[0-9]{7}$"), TaskResult = msisdn });
         }
     }
 }

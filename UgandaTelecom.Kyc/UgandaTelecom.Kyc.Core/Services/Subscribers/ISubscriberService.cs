@@ -15,6 +15,6 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
         Task<IEnumerable<Subscriber>> SearchAsync(string keyword);
         Task<TaskOperationResult> ArchiveAsync(string msisdn);
         Task<Subscriber> GetAsync(string msisdn);
-        Task<bool> ValidateMsidnAsync(string msisdn);
+        Task<TaskOperationResult> ValidateMsidnAsync(string msisdn);
     }
 }
