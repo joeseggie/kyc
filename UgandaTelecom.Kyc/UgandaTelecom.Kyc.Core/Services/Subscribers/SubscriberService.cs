@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using UgandaTelecom.Kyc.Core.Common.Extensions;
 using UgandaTelecom.Kyc.Core.Common.OperationResults;
 using UgandaTelecom.Kyc.Core.Data;
 using UgandaTelecom.Kyc.Core.Models;
@@ -38,9 +39,66 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
         /// </summary>
         /// <param name="msisdn">Subscriber MSISDN.</param>
         /// <returns>Subscriber details.</returns>
-        public Task<Subscriber> GetAsync(string msisdn)
+        public async Task<Subscriber> GetAsync(string msisdn)
         {
-            throw new NotImplementedException();
+            using (var db = (SqlConnection)_sqlDatabaseServer.Connection)
+            {
+                await db.OpenAsync();
+                var query = "SELECT TOP 1 SubscriberID, Surname, GivenName, Gender, DateOfBirth, IdentificationNumber, Msisdn, IdentificationType, Village, District, FaceImg, IdFrontimg, IdBackimg, AgentMsisdn, RegistrationDate, RegistrationTime, Mode, Verified, VerificationRequest, NiraValidation, OtherNames, IdCardNumber, VisaExpiry FROM SimAppMain WHERE Msisdn = @Msisdn;";
+
+                using (var transaction = db.BeginTransaction())
+                {
+                    try
+                    {
+                        var command = db.CreateCommand();
+                        command.Transaction = transaction;
+                        command.CommandText = query;
+                        command.CommandType = CommandType.Text;
+
+                        command.Parameters.Add(SetCommandParameter("@Msisdn", msisdn));
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            var subscriber = new Subscriber();
+
+                            if (reader.HasRows)
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    subscriber.SubscriberId = reader.SafeGetGuid(0, null);
+                                    subscriber.Surname = reader.SafeGetString(1, string.Empty);
+                                    subscriber.GivenName = reader.SafeGetString(2, string.Empty);
+                                    subscriber.Gender = reader.SafeGetString(3, string.Empty);
+                                    subscriber.DateOfBirth = reader.SafeGetDateTime(4, null);
+                                    subscriber.IdentificationNumber = reader.SafeGetString(5, string.Empty);
+                                    subscriber.Msisdn = reader.SafeGetString(6, string.Empty);
+                                    subscriber.IdentificationType = reader.SafeGetString(7, string.Empty);
+                                    subscriber.Village = reader.SafeGetString(8, string.Empty);
+                                    subscriber.District = reader.SafeGetString(9, string.Empty);
+                                    subscriber.FaceImg = reader.SafeGetString(10, string.Empty);
+                                    subscriber.IdFrontimg = reader.SafeGetString(11, string.Empty);
+                                    subscriber.IdBackimg = reader.SafeGetString(12, string.Empty);
+                                    subscriber.AgentMsisdn = reader.SafeGetString(13, string.Empty);
+                                    subscriber.RegistrationDate = reader.SafeGetDateTime(14, null);
+                                    subscriber.RegistrationTime = reader.SafeGetTimeSpan(15, null);
+                                    subscriber.Mode = reader.SafeGetString(16, string.Empty);
+                                    subscriber.Verified = reader.SafeGetBoolean(17, false);
+                                    subscriber.VerificationRequest = reader.SafeGetString(18, string.Empty);
+                                    subscriber.NiraValidation = reader.SafeGetString(19, string.Empty);
+                                    subscriber.OtherNames = reader.SafeGetString(20, string.Empty);
+                                    subscriber.IdCardNumber = reader.SafeGetString(21, string.Empty);
+                                    subscriber.VisaExpiry = reader.SafeGetDateTime(22, null);
+                                }
+
+                                return subscriber;
+                            }
+                        }
+
+                        return null;
+                    }
+                    catch (SqlException) { throw; }
+                }
+            }
         }
 
         /// <summary>
