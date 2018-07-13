@@ -41,5 +41,12 @@ namespace UgandaTelecom.Kyc.Api.Controllers
             var operationResult = await _subscriberService.ValidateMsidnAsync(msisdn);
             return Ok(operationResult);
         }
+
+        [HttpGet("isregistered/{msisdn}")]
+        public async Task<IActionResult> IsRegistered([FromRoute]string msisdn)
+        {
+            var operationResult = await _subscriberService.IsRegisteredAsync(msisdn);
+            return Ok(operationResult);
+        }
     }
 }
