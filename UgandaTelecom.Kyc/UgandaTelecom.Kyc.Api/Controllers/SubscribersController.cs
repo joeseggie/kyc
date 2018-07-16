@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UgandaTelecom.Kyc.Core.Common.OperationResults;
 using UgandaTelecom.Kyc.Core.Models;
 using UgandaTelecom.Kyc.Core.Services;
 using UgandaTelecom.Kyc.Core.Services.Subscribers;
@@ -35,17 +36,19 @@ namespace UgandaTelecom.Kyc.Api.Controllers
             return Ok(operationResult);
         }
 
-        [HttpGet("validatemsisdn/{msisdn}")]
+        [HttpGet("validate/{msisdn}")]
         public async Task<IActionResult> ValidateMsisdn([FromRoute]string msisdn)
         {
-            var operationResult = await _subscriberService.ValidateMsidnAsync(msisdn);
-            return Ok(operationResult);
-        }
-
-        [HttpGet("isregistered/{msisdn}")]
-        public async Task<IActionResult> IsRegistered([FromRoute]string msisdn)
-        {
-            var operationResult = await _subscriberService.IsRegisteredAsync(msisdn);
+            var operationResult = new TaskOperationResult { Success = false, TaskResult = "Task not implemented" };
+            var msisdnValidationOperationResult = await _subscriberService.ValidateMsidnAsync(msisdn);
+            if (msisdnValidationOperationResult.Success)
+            {
+                operationResult = await _subscriberService.IsRegisteredAsync(msisdn);
+            }
+            else
+            {
+                operationResult = msisdnValidationOperationResult;
+            }
             return Ok(operationResult);
         }
     }
