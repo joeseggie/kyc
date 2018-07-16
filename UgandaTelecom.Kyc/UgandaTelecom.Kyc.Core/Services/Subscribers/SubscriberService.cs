@@ -277,7 +277,21 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
         /// <returns>True if MSISDN is a valid UTL number</returns>
         public async Task<TaskOperationResult> ValidateMsidnAsync(string msisdn)
         {
-            return await Task.FromResult(new TaskOperationResult { Success = Regex.IsMatch(msisdn, "^(71|4[0-9])[0-9]{7}$"), TaskResult = msisdn });
+            return await Task.Run(() => {
+                var operationResult = new TaskOperationResult { Success = false, TaskResult = "Task not implemented." };
+                if (Regex.IsMatch(msisdn, "^(71|4[0-9])[0-9]{7}$"))
+                {
+                    operationResult.Success = true;
+                    operationResult.TaskResult = msisdn;
+                }
+                else
+                {
+                    operationResult.Success = false;
+                    operationResult.TaskResult = $"{msisdn} is not a valid UTL number.";
+                }
+
+                return operationResult;
+            });
         }
 
         /// <summary>
@@ -285,13 +299,13 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
         /// </summary>
         /// <param name="msisdn">Msisdn to check</param>
         /// <returns>True if MSISDN is registered.</returns>
-        public async Task<TaskOperationResult> IsRegisteredAsync(string msisdn)
+        public async Task<TaskOperationResult> NotRegisteredAsync(string msisdn)
         {
             if ((await GetAsync(msisdn)) == null)
-                return new TaskOperationResult { Success = false, TaskResult = msisdn };
+                return new TaskOperationResult { Success = true, TaskResult = msisdn };
             else
                 return
-                    new TaskOperationResult { Success = true, TaskResult = msisdn };
+                    new TaskOperationResult { Success = false, TaskResult = $"{msisdn} is already registered." };
         }
     }
 }

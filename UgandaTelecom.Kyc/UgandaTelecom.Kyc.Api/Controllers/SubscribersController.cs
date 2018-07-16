@@ -43,7 +43,7 @@ namespace UgandaTelecom.Kyc.Api.Controllers
             var msisdnValidationOperationResult = await _subscriberService.ValidateMsidnAsync(msisdn);
             if (msisdnValidationOperationResult.Success)
             {
-                operationResult = await _subscriberService.IsRegisteredAsync(msisdn);
+                operationResult = await _subscriberService.NotRegisteredAsync(msisdn);
             }
             else
             {

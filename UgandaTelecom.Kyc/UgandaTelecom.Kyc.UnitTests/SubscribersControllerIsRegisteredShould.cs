@@ -21,13 +21,13 @@ namespace UgandaTelecom.Kyc.UnitTests
             var mockSubscriberService = new Mock<ISubscriberService>();
             var testController = new SubscribersController(mockSubscriberService.Object);
             var mockMsisdn = "711187734";
-            mockSubscriberService.Setup(m => m.IsRegisteredAsync(mockMsisdn)).Returns(Task.FromResult(new TaskOperationResult { Success = true, TaskResult = mockMsisdn }));
+            mockSubscriberService.Setup(m => m.NotRegisteredAsync(mockMsisdn)).Returns(Task.FromResult(new TaskOperationResult { Success = true, TaskResult = mockMsisdn }));
 
             // When
             await testController.IsRegistered(mockMsisdn);
 
             // Then
-            mockSubscriberService.Verify(m => m.IsRegisteredAsync(mockMsisdn), Times.AtMostOnce());
+            mockSubscriberService.Verify(m => m.NotRegisteredAsync(mockMsisdn), Times.AtMostOnce());
         }
 
         [Fact, Trait("Controller", "SubscribersController")]
@@ -37,7 +37,7 @@ namespace UgandaTelecom.Kyc.UnitTests
             var mockSubscriberService = new Mock<ISubscriberService>();
             var testController = new SubscribersController(mockSubscriberService.Object);
             var mockMsisdn = "711187734";
-            mockSubscriberService.Setup(m => m.IsRegisteredAsync(mockMsisdn)).Returns(Task.FromResult(new TaskOperationResult { Success = true, TaskResult = mockMsisdn }));
+            mockSubscriberService.Setup(m => m.NotRegisteredAsync(mockMsisdn)).Returns(Task.FromResult(new TaskOperationResult { Success = true, TaskResult = mockMsisdn }));
 
             // When
             var result = await testController.IsRegistered(mockMsisdn);
@@ -53,7 +53,7 @@ namespace UgandaTelecom.Kyc.UnitTests
             var mockSubscriberService = new Mock<ISubscriberService>();
             var testController = new SubscribersController(mockSubscriberService.Object);
             var mockMsisdn = "711187734";
-            mockSubscriberService.Setup(m => m.IsRegisteredAsync(mockMsisdn)).Returns(Task.FromResult(new TaskOperationResult { Success = true, TaskResult = mockMsisdn }));
+            mockSubscriberService.Setup(m => m.NotRegisteredAsync(mockMsisdn)).Returns(Task.FromResult(new TaskOperationResult { Success = true, TaskResult = mockMsisdn }));
 
             // When
             var result = await testController.IsRegistered(mockMsisdn);

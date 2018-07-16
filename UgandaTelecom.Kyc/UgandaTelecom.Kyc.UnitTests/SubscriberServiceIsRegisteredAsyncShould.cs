@@ -23,7 +23,7 @@ namespace UgandaTelecom.Kyc.UnitTests
             var mockMsisdn = "711187734";
 
             // When
-            await mockService.Object.IsRegisteredAsync(mockMsisdn);
+            await mockService.Object.NotRegisteredAsync(mockMsisdn);
 
             // Then
             mockService.Verify(m => m.GetAsync(mockMsisdn), Times.AtMostOnce());
@@ -39,7 +39,7 @@ namespace UgandaTelecom.Kyc.UnitTests
             var testService = new SubscriberService(mockISqlDatabaseServer.Object);
 
             // When
-            var result = await testService.IsRegisteredAsync(mockMsisdn);
+            var result = await testService.NotRegisteredAsync(mockMsisdn);
 
             // Then
             result.ShouldBeOfType<TaskOperationResult>();
