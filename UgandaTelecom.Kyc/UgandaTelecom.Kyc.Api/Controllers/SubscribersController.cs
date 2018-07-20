@@ -29,7 +29,7 @@ namespace UgandaTelecom.Kyc.Api.Controllers
             return Ok(operationResult);
         }
 
-        [HttpPut("update")]
+        [HttpPost("update")]
         public async Task<IActionResult> Update([FromBody]Subscriber subscriber)
         {
             var operationResult = await _subscriberService.UpdateAsync(subscriber);
