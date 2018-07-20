@@ -230,9 +230,9 @@ namespace UgandaTelecom.Kyc.Core.Services.Subscribers
                         command.CommandText = updateQuery;
                         command.CommandType = CommandType.Text;
 
-                        command.Parameters.Add(SetCommandParameter("@Gender", subscriber.Gender.ToUpper()));
-                        command.Parameters.Add(SetCommandParameter("@Village", subscriber.Village.ToUpper()));
-                        command.Parameters.Add(SetCommandParameter("@District", subscriber.District.ToUpper()));
+                        command.Parameters.Add(SetCommandParameter("@Gender", subscriber.Gender?.ToUpper()));
+                        command.Parameters.Add(SetCommandParameter("@Village", subscriber.Village?.ToUpper()));
+                        command.Parameters.Add(SetCommandParameter("@District", subscriber.District?.ToUpper()));
                         command.Parameters.Add(SetCommandParameter("@FaceImg", subscriber.FaceImg));
                         command.Parameters.Add(SetCommandParameter("@IdFrontimg", subscriber.IdFrontimg));
                         command.Parameters.Add(SetCommandParameter("@IdBackimg", subscriber.IdBackimg));
