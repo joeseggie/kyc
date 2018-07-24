@@ -39,3 +39,12 @@ class IndividualSubscriberHandler():
                 sqlserver_version = row[0]
                 row = cursor.fetchone()
         return sqlserver_version
+    
+    
+    def face_upload(self, face_image):
+        """Subscriber face image upload.
+        
+        Arguments:
+            face_image {str} -- Base64 string of the subscribers face image
+        """
+        pass
