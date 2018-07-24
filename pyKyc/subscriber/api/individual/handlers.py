@@ -40,7 +40,6 @@ class IndividualSubscriberHandler():
                 row = cursor.fetchone()
         return sqlserver_version
     
-    
     def face_upload(self, face_image):
         """Subscriber face image upload.
         
