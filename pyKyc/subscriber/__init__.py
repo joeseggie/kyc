@@ -17,3 +17,8 @@ def app_config(app):
     app.config.from_object(config_env[config_name])
 
 app_config(app)
+
+# Register blueprints
+from subscriber.api.individual.routes import INDIVIDUAL_BLUEPRINT
+
+app.register_blueprint(INDIVIDUAL_BLUEPRINT, url_prefix='/api/v1.0/individual')

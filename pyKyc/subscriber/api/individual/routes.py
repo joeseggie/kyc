@@ -1,42 +1,59 @@
-from flask import Blueprint
-from handlers import IndividualSubscriberHandler
+"""Individual routes module
+"""
 
-individual_blueprint = Blueprint('individual', __name__)
 
-@individual_blueprint.route('/register', methods=['POST'])
-def regiser():
+from flask import Blueprint, jsonify, request
+from subscriber.api.individual.handlers import IndividualSubscriberHandler
+
+
+INDIVIDUAL_BLUEPRINT = Blueprint('individual', __name__)
+
+
+@INDIVIDUAL_BLUEPRINT.route('/register', methods=['POST'])
+def register():
     """Register individual subscriber
     """
-    pass
+    request_data = request.get_json()
+    handler = IndividualSubscriberHandler()
+    task_result = handler.register_subscriber(request_data)
+    if task_result['success']:
+        http_status_code = 201
+    else:
+        http_status_code = 400
+    return jsonify(task_result), http_status_code
 
-@individual_blueprint.route('/update', methods=['POST'])
+
+@INDIVIDUAL_BLUEPRINT.route('/update', methods=['POST'])
 def update():
     """Updates individual subscriber's registered information
     """
     pass
 
-@individual_blueprint.route('/validate/<msisdn>')
+
+@INDIVIDUAL_BLUEPRINT.route('/validate/<msisdn>')
 def validate(msisdn):
     """Validates MSISDN if it's a UTL number and not already registered.
-    
+
     Arguments:
         msisdn {str} -- UTL network number.
     """
     pass
 
-@individual_blueprint.route('/get/<msisdn>')
+
+@INDIVIDUAL_BLUEPRINT.route('/get/<msisdn>')
 def get(msisdn):
     """Queries for the MSISDN from the subscribers database.
-    
+
     Arguments:
         msisdn {str} -- UTL network number
     """
-    pass
+    return jsonify({'MSISDN': msisdn})
 
-@individual_blueprint.route('/search/<keyword>')
+
+@INDIVIDUAL_BLUEPRINT.route('/search/<keyword>')
 def search(keyword):
     """Searches database using the keyword.
-    
+
     Arguments:
         keyword {string} -- Search term or word used to search database.
     """

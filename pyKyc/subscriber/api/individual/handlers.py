@@ -1,8 +1,11 @@
 """Individual subscriber tasks handler
 """
 
+
 import pyodbc
 from subscriber import app
+from datetime import datetime
+
 
 class IndividualSubscriberHandler():
     """Object to handle all operations for individual subscribers
@@ -12,17 +15,21 @@ class IndividualSubscriberHandler():
         """Constructor
         """
         self.cnxn = self.db_connection()
-    
+
+
     def db_connection(self):
         """Gets connection to the database
 
         Returns: pyodbc connect object
         """
-        return pyodbc.connect('DRIVER={ODBC DRIVER 17 for SQL Server}' + 
-        ';SERVER=' + app.config['DATABASE_CONFIG']['HOST'] + 
-        ';DATABASE=' + app.config['DATABASE_CONFIG']['DB'] +
-        ';UID=' + app.config['DATABASE_CONFIG']['USER'] + 
-        ';PWD=' + app.config['DATABASE_CONFIG']['PASSWORD'])
+        return pyodbc.connect(
+            r'DRIVER={ODBC DRIVER 17 for SQL Server};'
+            r'SERVER=' + app.config['DATABASE_CONFIG']['HOST'] +';'
+            r'DATABASE=' + app.config['DATABASE_CONFIG']['DB'] + ';'
+            r'UID=' + app.config['DATABASE_CONFIG']['USER'] + ';'
+            r'PWD=' + app.config['DATABASE_CONFIG']['PASSWORD'] + ';'
+        )
+
 
     def register_subscriber(self, subscriber):
         """Registers subscriber
@@ -30,16 +37,72 @@ class IndividualSubscriberHandler():
         Arguments:
             subscriber {obj} -- Subscriber details for registration
         """
-        with self.cnxn as connection:
-            cursor = connection.cursor()
-            cursor = cursor.execute('SELECT @@version;')
-            row = cursor.fetchone()
+        try:
+            with self.cnxn as connection:
+                query = 'INSERT INTO SimAppMain (Surname, GivenName, Gender, DateOfBirth, IdentificationNumber, Msisdn, IdentificationType, Village, District, FaceImg, IdFrontimg, IdBackimg, AgentMsisdn, RegistrationDate, RegistrationTime, Mode, Verified, VerificationRequest, NiraValidation, OtherNames, IdCardNumber, VisaExpiry) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'
 
-            while row:
-                sqlserver_version = row[0]
-                row = cursor.fetchone()
-        return sqlserver_version
-    
+                transaction_logged = datetime.now()
+                registration_date = transaction_logged
+                regitration_time = transaction_logged.time()
+
+                agent_msisdn = subscriber['AgentMsisdn'].upper()
+                msisdn = subscriber['Msisdn'].upper()
+                date_of_birth = datetime.strptime(subscriber['DateOfBirth'], '%Y-%m-%d')
+                id_card_number = subscriber['IdCardNumber'].upper()
+                given_name = subscriber['GivenName'].upper()
+                identification_number = subscriber['IdentificationNumber'].upper()
+                identification_type = subscriber['IdentificationType'].upper()
+                mode = subscriber['Mode'].upper()
+                verified = subscriber['Verified']
+                verification_request = 'RETURNED'
+                other_names = subscriber['OtherNames'].upper()
+                surname = subscriber['Surname'].upper()
+                face_image = subscriber['FaceImg']
+                id_front_image = subscriber['IdFrontimg']
+                id_back_image = subscriber['IdBackimg']
+                village = subscriber['Village'].upper()
+                district = subscriber['District'].upper()
+                gender = subscriber['Gender'].upper()
+                nira_validation = None
+                visa_expiry = None
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    query,
+                    surname,
+                    given_name,
+                    gender,
+                    date_of_birth,
+                    identification_number,
+                    msisdn,
+                    identification_type,
+                    village,
+                    district,
+                    face_image,
+                    id_front_image,
+                    id_back_image,
+                    agent_msisdn,
+                    registration_date,
+                    regitration_time,
+                    mode,
+                    verified,
+                    verification_request,
+                    nira_validation,
+                    other_names,
+                    id_card_number,
+                    visa_expiry
+                )
+                cursor.commit()
+
+                operationResult = {'success': True, 'taskResult': msisdn }
+        except pyodbc.IntegrityError:
+            operationResult = { 'success': False, 'taskResult': f'Subscriber MSISDN {subscriber["Msisdn"]} already registered' }
+        except pyodbc.DatabaseError:
+            operationResult = { 'success': False, 'taskResult': f'Subscriber registration for MSISDN {subscriber["Msisdn"]}' }
+        
+        return operationResult
+
+
     def face_upload(self, face_image):
         """Subscriber face image upload.
         
