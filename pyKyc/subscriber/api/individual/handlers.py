@@ -166,11 +166,11 @@ class IndividualSubscriberHandler():
                     given_name,
                     gender,
                     date_of_birth,
-                    msisdn,
                     village,
                     district,
                     other_names,
-                    id_card_number
+                    id_card_number,
+                    msisdn
                 )
                 cursor.commit()
 
