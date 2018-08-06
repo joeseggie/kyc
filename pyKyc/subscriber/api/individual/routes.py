@@ -23,11 +23,18 @@ def register():
     return jsonify(task_result), http_status_code
 
 
-@INDIVIDUAL_BLUEPRINT.route('/update', methods=['POST'])
-def update():
-    """Updates individual subscriber's registered information
+@INDIVIDUAL_BLUEPRINT.route('/faceupload', methods=['POST'])
+def face_upload():
+    """Route to upload individual subscriber's face image.
     """
-    pass
+    request_data = request.get_json()
+    handler = IndividualSubscriberHandler()
+    task_result = handler.face_upload(request_data['Msisdn'], request_data['FaceImg'])
+    if task_result['success']:
+        http_status_code = 201
+    else:
+        http_status_code = 400
+    return jsonify(task_result), http_status_code
 
 
 @INDIVIDUAL_BLUEPRINT.route('/validate/<msisdn>')

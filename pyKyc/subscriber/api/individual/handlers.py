@@ -105,15 +105,32 @@ class IndividualSubscriberHandler():
         return operationResult
 
 
-    def face_upload(self, face_image : str):
+    def face_upload(self, msisdn : str, face_image : str):
         """Subscriber face image upload.
         
         Parameters
         ----------
+        msisdn : str
+            MSISDN of subscriber whose image is being uploaded.
+
         face_image : str
             Base64 string of the subscribers face image
         """
-        pass
+        try:
+            with self.cnxn as connection:
+                query = 'UPDATE SimAppMain SET FaceImg = ? WHERE Msisdn = ?;'
+                cursor = connection.cursor()
+                cursor.execute(
+                    query,
+                    face_image,
+                    msisdn)
+                cursor.commit()
+
+                operationResult = { 'success': True, 'taskResult': msisdn }
+        except pyodbc.DatabaseError:
+            operationResult = { 'success': False, 'taskResult': f'Subscriber registration update for MSISDN {msisdn} failed.' }
+        
+        return operationResult
     
 
     def idfront_upload(self, id_front : str):
@@ -149,7 +166,7 @@ class IndividualSubscriberHandler():
             with self.cnxn as connection:
                 query = 'UPDATE SimAppMain SET Surname = ?, GivenName = ?, Gender = ?, DateOfBirth = ?, Village = ?, District = ?, OtherNames = ?, IdCardNumber = ? WHERE Msisdn = ?;'
 
-                msisdn = subscriber['Msisdn'].upper()
+                msisdn = subscriber['Msisdn']
                 date_of_birth = datetime.strptime(subscriber['DateOfBirth'], '%Y-%m-%d')
                 id_card_number = subscriber['IdCardNumber'].upper()
                 given_name = subscriber['GivenName'].upper()
@@ -170,8 +187,7 @@ class IndividualSubscriberHandler():
                     district,
                     other_names,
                     id_card_number,
-                    msisdn
-                )
+                    msisdn)
                 cursor.commit()
 
                 operationResult = {'success': True, 'taskResult': msisdn }
