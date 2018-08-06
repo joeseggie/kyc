@@ -51,6 +51,20 @@ def idfront_upload():
     return jsonify(task_result), http_status_code
 
 
+@INDIVIDUAL_BLUEPRINT.route('/idback', methods=['POST'])
+def idback_upload():
+    """Route to upload individual subscriber's ID back image.
+    """
+    request_data = request.get_json()
+    handler = IndividualSubscriberHandler()
+    task_result = handler.idback_upload(request_data['Msisdn'], request_data['IdBackimg'])
+    if task_result['success']:
+        http_status_code = 201
+    else:
+        http_status_code = 400
+    return jsonify(task_result), http_status_code
+
+
 @INDIVIDUAL_BLUEPRINT.route('/validate/<msisdn>')
 def validate(msisdn):
     """Validates MSISDN if it's a UTL number and not already registered.

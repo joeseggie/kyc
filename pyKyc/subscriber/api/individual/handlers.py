@@ -161,16 +161,34 @@ class IndividualSubscriberHandler():
         return operationResult
     
 
-    def idback_upload(self, id_back : str):
+    def idback_upload(self, msisdn : str, id_back : str):
         """Upload ID back image to the registration database.
 
         Parameters
         ----------
+        msisdn : str
+            MSISDN of subscriber whose image is being uploaded.
+
         id_back : str
             Base64 string of the ID back image
         """
-        pass
-    
+        try:
+            with self.cnxn as connection:
+                query = 'UPDATE SimAppMain SET IdBackimg = ? WHERE Msisdn = ?;'
+                cursor = connection.cursor()
+                cursor.execute(
+                    query,
+                    id_back,
+                    msisdn)
+                cursor.commit()
+
+                operationResult = { 'success': True, 'taskResult': msisdn }
+        except pyodbc.DatabaseError:
+            operationResult = { 'success': False, 'taskResult': f'ID back image upload for subscriber {msisdn} failed.' }
+        
+        return operationResult
+
+
     def update_registration(self, subscriber : dict):
         """Update subscriber registration.
 
