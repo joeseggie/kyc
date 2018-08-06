@@ -110,3 +110,73 @@ class IndividualSubscriberHandler():
             face_image {str} -- Base64 string of the subscribers face image
         """
         pass
+    
+        face_image : str
+            Base64 string of the subscribers face image
+        """
+        pass
+    
+
+    def idfront_upload(self, id_front : str):
+        """Upload ID front image to the registration database.
+
+        Parameters
+        ----------
+        id_front : str
+            Base64 string of the ID front image
+        """
+        pass
+    
+
+    def idback_upload(self, id_back : str):
+        """Upload ID back image to the registration database.
+
+        Parameters
+        ----------
+        id_back : str
+            Base64 string of the ID back image
+        """
+        pass
+    
+    def update_registration(self, subscriber : dict):
+        """Update subscriber registration.
+
+        Parameters
+        ----------
+        subscriber : dict
+            Subscriber details to be updated.
+        """
+        try:
+            with self.cnxn as connection:
+                query = 'UPDATE SimAppMain SET Surname = ?, GivenName = ?, Gender = ?, DateOfBirth = ?, Village = ?, District = ?, OtherNames = ?, IdCardNumber = ? WHERE Msisdn = ?;'
+
+                msisdn = subscriber['Msisdn'].upper()
+                date_of_birth = datetime.strptime(subscriber['DateOfBirth'], '%Y-%m-%d')
+                id_card_number = subscriber['IdCardNumber'].upper()
+                given_name = subscriber['GivenName'].upper()
+                other_names = subscriber['OtherNames'].upper()
+                surname = subscriber['Surname'].upper()
+                village = subscriber['Village'].upper()
+                district = subscriber['District'].upper()
+                gender = subscriber['Gender'].upper()
+
+                cursor = connection.cursor()
+                cursor.execute(
+                    query,
+                    surname,
+                    given_name,
+                    gender,
+                    date_of_birth,
+                    msisdn,
+                    village,
+                    district,
+                    other_names,
+                    id_card_number
+                )
+                cursor.commit()
+
+                operationResult = {'success': True, 'taskResult': msisdn }
+        except pyodbc.DatabaseError:
+            operationResult = { 'success': False, 'taskResult': f'Subscriber registration update for MSISDN {subscriber["Msisdn"]} failed.' }
+        
+        return operationResult
