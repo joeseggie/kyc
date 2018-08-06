@@ -195,18 +195,13 @@ class IndividualSubscriberHandler():
         Parameters
         ----------
         subscriber : dict
-            Subscriber details to be updated.
+            Subscriber details Msisdn, Village, Gender and District for update.
         """
         try:
             with self.cnxn as connection:
-                query = 'UPDATE SimAppMain SET Surname = ?, GivenName = ?, Gender = ?, DateOfBirth = ?, Village = ?, District = ?, OtherNames = ?, IdCardNumber = ? WHERE Msisdn = ?;'
+                query = 'UPDATE SimAppMain SET Gender = ?, Village = ?, District = ? WHERE Msisdn = ?;'
 
                 msisdn = subscriber['Msisdn']
-                date_of_birth = datetime.strptime(subscriber['DateOfBirth'], '%Y-%m-%d')
-                id_card_number = subscriber['IdCardNumber'].upper()
-                given_name = subscriber['GivenName'].upper()
-                other_names = subscriber['OtherNames'].upper()
-                surname = subscriber['Surname'].upper()
                 village = subscriber['Village'].upper()
                 district = subscriber['District'].upper()
                 gender = subscriber['Gender'].upper()
@@ -214,14 +209,9 @@ class IndividualSubscriberHandler():
                 cursor = connection.cursor()
                 cursor.execute(
                     query,
-                    surname,
-                    given_name,
                     gender,
-                    date_of_birth,
                     village,
                     district,
-                    other_names,
-                    id_card_number,
                     msisdn)
                 cursor.commit()
 

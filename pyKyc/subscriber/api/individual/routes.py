@@ -65,6 +65,20 @@ def idback_upload():
     return jsonify(task_result), http_status_code
 
 
+@INDIVIDUAL_BLUEPRINT.route('/update', methods=['POST'])
+def update():
+    """Route to update individual subscribers information.
+    """
+    request_data = request.get_json()
+    handler = IndividualSubscriberHandler()
+    task_result = handler.update_registration(request_data)
+    if task_result['success']:
+        http_status_code = 201
+    else:
+        http_status_code = 400
+    return jsonify(task_result), http_status_code
+
+
 @INDIVIDUAL_BLUEPRINT.route('/validate/<msisdn>')
 def validate(msisdn):
     """Validates MSISDN if it's a UTL number and not already registered.
