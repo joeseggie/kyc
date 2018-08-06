@@ -62,9 +62,9 @@ class IndividualSubscriberHandler():
                 face_image = None
                 id_front_image = None
                 id_back_image = None
-                village = subscriber['Village'].upper()
-                district = subscriber['District'].upper()
-                gender = subscriber['Gender'].upper()
+                village = None
+                district = None
+                gender = None
                 nira_validation = None
                 visa_expiry = None
 
