@@ -31,11 +31,13 @@ class IndividualSubscriberHandler():
         )
 
 
-    def register_subscriber(self, subscriber):
+    def register_subscriber(self, subscriber : dict):
         """Registers subscriber
         
-        Arguments:
-            subscriber {obj} -- Subscriber details for registration
+        Parameters
+        ----------
+        subscriber : dict
+            Subscriber details for registration.
         """
         try:
             with self.cnxn as connection:
@@ -57,9 +59,9 @@ class IndividualSubscriberHandler():
                 verification_request = 'RETURNED'
                 other_names = subscriber['OtherNames'].upper()
                 surname = subscriber['Surname'].upper()
-                face_image = subscriber['FaceImg']
-                id_front_image = subscriber['IdFrontimg']
-                id_back_image = subscriber['IdBackimg']
+                face_image = None
+                id_front_image = None
+                id_back_image = None
                 village = subscriber['Village'].upper()
                 district = subscriber['District'].upper()
                 gender = subscriber['Gender'].upper()
@@ -96,21 +98,18 @@ class IndividualSubscriberHandler():
 
                 operationResult = {'success': True, 'taskResult': msisdn }
         except pyodbc.IntegrityError:
-            operationResult = { 'success': False, 'taskResult': f'Subscriber MSISDN {subscriber["Msisdn"]} already registered' }
+            operationResult = { 'success': False, 'taskResult': f'Subscriber MSISDN {subscriber["Msisdn"]} already registered.' }
         except pyodbc.DatabaseError:
-            operationResult = { 'success': False, 'taskResult': f'Subscriber registration for MSISDN {subscriber["Msisdn"]}' }
+            operationResult = { 'success': False, 'taskResult': f'Subscriber registration for MSISDN {subscriber["Msisdn"]} failed.' }
         
         return operationResult
 
 
-    def face_upload(self, face_image):
+    def face_upload(self, face_image : str):
         """Subscriber face image upload.
         
-        Arguments:
-            face_image {str} -- Base64 string of the subscribers face image
-        """
-        pass
-    
+        Parameters
+        ----------
         face_image : str
             Base64 string of the subscribers face image
         """
