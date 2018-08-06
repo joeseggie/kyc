@@ -128,20 +128,37 @@ class IndividualSubscriberHandler():
 
                 operationResult = { 'success': True, 'taskResult': msisdn }
         except pyodbc.DatabaseError:
-            operationResult = { 'success': False, 'taskResult': f'Subscriber registration update for MSISDN {msisdn} failed.' }
+            operationResult = { 'success': False, 'taskResult': f'Face upload for subscriber {msisdn} failed.' }
         
         return operationResult
     
 
-    def idfront_upload(self, id_front : str):
+    def idfront_upload(self, msisdn : str, id_front : str):
         """Upload ID front image to the registration database.
 
         Parameters
         ----------
+        msisdn : str
+            MSISDN of subscriber whose image is being uploaded.
+
         id_front : str
             Base64 string of the ID front image
         """
-        pass
+        try:
+            with self.cnxn as connection:
+                query = 'UPDATE SimAppMain SET IdFrontimg = ? WHERE Msisdn = ?;'
+                cursor = connection.cursor()
+                cursor.execute(
+                    query,
+                    id_front,
+                    msisdn)
+                cursor.commit()
+
+                operationResult = { 'success': True, 'taskResult': msisdn }
+        except pyodbc.DatabaseError:
+            operationResult = { 'success': False, 'taskResult': f'ID front image upload for subscriber {msisdn} failed.' }
+        
+        return operationResult
     
 
     def idback_upload(self, id_back : str):
